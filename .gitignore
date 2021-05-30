@@ -48,6 +48,9 @@ TestResults/
 *.rar
 *.tar
 *.zip
+*bin
+*.vscode
+*.vs
 ######################
 # Logs and databases #
 ######################
