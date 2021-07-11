@@ -1,0 +1,33 @@
+.activities-nav-bar {
+  background-image: linear-gradient(
+    135deg,
+    rgb(24, 42, 115) 0%,
+    rgb(33, 138, 174) 69%,
+    rgb(32, 167, 172) 89%
+  ) !important;
+}
+.activities-card-items {
+  background-color: rgb(5, 109, 109) !important;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  color: wheat;
+  margin-bottom: 10px;
+}
+.activities-card-items:hover {
+  background-color: rgba(4, 124, 124, 0.534) !important;
+  color: white;
+}
+.activities-nav-brand,
+.activities-nav-link {
+  color: whitesmoke !important;
+}
+.activity-card-delete {
+  color: red;
+}
+.activity-card-delete:hover {
+  color: rgba(255, 0, 0, 0.705);
+}
+.activity-card {
+  margin-top: 80px;
+}
