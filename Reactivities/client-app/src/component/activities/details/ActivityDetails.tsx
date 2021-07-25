@@ -1,13 +1,18 @@
 import { Button, Card } from "react-bootstrap";
 import Moment from "react-moment";
-import { Activity } from "../../../models/activity";
+import { Activity } from "../../../app/models/activity";
 
 interface Props {
   activity: Activity;
   cancelSelectActivity: () => void;
+  handleFormOpen: (id: string) => void;
 }
 
-export function ActivityDetails({ activity, cancelSelectActivity }: Props) {
+export function ActivityDetails({
+  activity,
+  cancelSelectActivity,
+  handleFormOpen,
+}: Props) {
   return (
     <Card className="activities-card-items">
       <Card.Img
@@ -22,7 +27,11 @@ export function ActivityDetails({ activity, cancelSelectActivity }: Props) {
         </Card.Text>
       </Card.Body>
       <Card.Footer>
-        <Button variant="primary" size="sm">
+        <Button
+          variant="primary"
+          size="sm"
+          onClick={() => handleFormOpen(activity.id)}
+        >
           Edit
         </Button>
         <Button

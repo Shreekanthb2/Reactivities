@@ -2,7 +2,11 @@ import React from "react";
 import { Button, Nav, Navbar } from "react-bootstrap";
 import { PersonCheck } from "react-bootstrap-icons";
 
-export function Navigationbar() {
+interface Props {
+  handleFormOpen: () => void;
+}
+
+export function Navigationbar({ handleFormOpen }: Props) {
   return (
     <Navbar
       collapseOnSelect
@@ -22,7 +26,9 @@ export function Navigationbar() {
         </Nav>
         <Nav>
           <Nav.Link href="#create">
-            <Button variant="primary">Create</Button>{" "}
+            <Button variant="primary" onClick={() => handleFormOpen()}>
+              Create
+            </Button>{" "}
           </Nav.Link>
         </Nav>
       </Navbar.Collapse>

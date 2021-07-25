@@ -1,9 +1,8 @@
-import React from "react";
 import { Badge, Button, Card } from "react-bootstrap";
 import { XLg } from "react-bootstrap-icons";
 import Moment from "react-moment";
 import { Segment } from "semantic-ui-react";
-import { Activity } from "../../../models/activity";
+import { Activity } from "../../../app/models/activity";
 
 interface Props {
   activities: Activity[];
