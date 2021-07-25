@@ -1,20 +1,18 @@
+import { observer } from "mobx-react-lite";
 import { Badge, Button, Card } from "react-bootstrap";
 import { XLg } from "react-bootstrap-icons";
 import Moment from "react-moment";
 import { Segment } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
+import { useStore } from "../../../app/stores/store";
 
-interface Props {
-  activities: Activity[];
-  selectActivity: (id: string) => void;
-  handleDeleteActivity: (id: string) => void;
-}
-
-export function ActivityList({
-  activities,
-  selectActivity,
-  handleDeleteActivity,
-}: Props) {
+export default observer(function ActivityList() {
+  const { activityStore } = useStore();
+  const {
+    activitiesByDate: activities,
+    selectActivity,
+    deleteActivity,
+  } = activityStore;
   return (
     <Segment>
       {activities.map((activity: Activity) => (
@@ -23,7 +21,7 @@ export function ActivityList({
             {activity.title}
             <XLg
               className="float-right activity-card-delete"
-              onClick={() => handleDeleteActivity(activity.id)}
+              onClick={() => deleteActivity(activity.id)}
             />
           </Card.Header>
           <Card.Body>
@@ -50,4 +48,4 @@ export function ActivityList({
       ))}
     </Segment>
   );
-}
+});

@@ -1,12 +1,10 @@
-import React from "react";
 import { Button, Nav, Navbar } from "react-bootstrap";
 import { PersonCheck } from "react-bootstrap-icons";
+import { useStore } from "../app/stores/store";
 
-interface Props {
-  handleFormOpen: () => void;
-}
+export function Navigationbar() {
+  const { activityStore } = useStore();
 
-export function Navigationbar({ handleFormOpen }: Props) {
   return (
     <Navbar
       collapseOnSelect
@@ -20,13 +18,11 @@ export function Navigationbar({ handleFormOpen }: Props) {
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link className="activities-nav-link" href="#activities">
-            Activities
-          </Nav.Link>
+          <Nav.Link className="activities-nav-link">Activities</Nav.Link>
         </Nav>
         <Nav>
-          <Nav.Link href="#create">
-            <Button variant="primary" onClick={() => handleFormOpen()}>
+          <Nav.Link>
+            <Button variant="primary" onClick={() => activityStore.openForm()}>
               Create
             </Button>{" "}
           </Nav.Link>

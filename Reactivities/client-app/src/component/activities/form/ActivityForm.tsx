@@ -1,20 +1,12 @@
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { format } from "util";
-import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { Activity } from "../../../app/models/activity";
+import { useStore } from "../../../app/stores/store";
 
-interface Props {
-  activity: Activity | undefined;
-  handleFormClose: () => void;
-  handleCreateOrEditActivity: (activity: Activity) => void;
-}
-
-export function ActivityForm({
-  activity: selectedActivity,
-  handleFormClose,
-  handleCreateOrEditActivity,
-}: Props) {
+export function ActivityForm() {
+  const { activityStore } = useStore();
+  const { selectedActivity, closeForm, createActivity, updateActivity } =
+    activityStore;
   const initialState = selectedActivity ?? {
     id: "",
     title: "",
@@ -27,12 +19,11 @@ export function ActivityForm({
   const [activity, setActivitity] = useState<Activity>(initialState);
   function handleSubmit(e: any) {
     e.preventDefault();
-    handleCreateOrEditActivity(activity);
+    activity.id ? updateActivity(activity) : createActivity(activity);
   }
   function handleInputChange(
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
-    debugger;
     const { name, value } = event.target;
     setActivitity({ ...activity, [name]: value });
   }
@@ -108,7 +99,7 @@ export function ActivityForm({
         variant="secondary"
         type="cancel"
         className="float-right"
-        onClick={() => handleFormClose()}
+        onClick={() => closeForm()}
       >
         Cancel
       </Button>
