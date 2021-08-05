@@ -1,34 +1,27 @@
-import { useEffect } from "react";
-import { Activity } from "../models/activity";
 import { Navigationbar } from "../../component/Navigationbar";
-import agent from "../api/agent";
-import LoadingComponent from "./LoadingComponent";
 import { observer } from "mobx-react-lite";
-import { useStore } from "../stores/store";
 import ActivityDashboard from "../../component/activities/dashboard/ActivityDashboard";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles.css";
+import { Container } from "react-bootstrap";
+import { Route } from "react-router-dom";
+import HomePage from "../../component/home/HomePage";
+import ActivityDetails from "../../component/activities/details/ActivityDetails";
+import ActivityForm from "../../component/activities/form/ActivityForm";
 
 function App() {
-  const { activityStore } = useStore();
-  const { loadActivities, loading } = activityStore;
-
-  useEffect(() => {
-    loadActivities();
-  }, [activityStore]);
-
-  if (loading)
-    return (
-      <LoadingComponent
-        loading={loading}
-        content="Loading the Activities..."
-      ></LoadingComponent>
-    );
-
   return (
     <>
       <Navigationbar />
-      <ActivityDashboard />
+      <Container>
+        <Route exact path="/" component={HomePage}></Route>
+        <Route exact path="/activities" component={ActivityDashboard}></Route>
+        <Route path="/activities/:id" component={ActivityDetails}></Route>
+        <Route
+          path={["/createActivity", "/manage/:id"]}
+          component={ActivityForm}
+        ></Route>
+      </Container>
     </>
   );
 }

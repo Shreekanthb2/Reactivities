@@ -23,8 +23,7 @@ export default class ActicityStore {
     try {
       const activities = await agent.Activities.list();
       activities.forEach((activity) => {
-        activity.date = activity.date.split("T")[0];
-        this.activityRegistery.set(activity.id, activity);
+        this.setActivity(activity);
       });
       this.setLoading(false);
     } catch (error) {
@@ -32,25 +31,54 @@ export default class ActicityStore {
       this.setLoading(false);
     }
   };
+  loadActivity = async (id: string) => {
+    let activity = this.getActivity(id);
+    if (activity) {
+      this.selectedActivity = activity;
+      return activity;
+    } else {
+      this.setLoading(true);
+      try {
+        activity = await agent.Activities.details(id);
+        this.setActivity(activity);
+        this.selectedActivity = activity;
+        this.setLoading(false);
+        return activity;
+      } catch (error) {
+        console.error(error);
+        this.setLoading(false);
+      }
+    }
+  };
+
+  private setActivity = (activity: Activity) => {
+    activity.date = activity.date.split("T")[0];
+    this.activityRegistery.set(activity.id, activity);
+  };
+
+  private getActivity = (id: string) => {
+    return this.activityRegistery.get(id);
+  };
 
   setLoading = (state: boolean) => {
     this.loading = state;
   };
 
-  selectActivity = (id: string) => {
-    this.selectedActivity = this.activityRegistery.get(id);
-    //this.selectedActivity = this.activities.find((act) => act.id === id);
-  };
-  cancelSelectedActivity = () => {
-    this.selectedActivity = undefined;
-  };
-  openForm = (id?: string) => {
-    id ? this.selectActivity(id) : this.cancelSelectedActivity();
-    this.editMode = true;
-  };
-  closeForm = () => {
-    this.editMode = true;
-  };
+  // selectActivity = (id: string) => {
+  //   this.selectedActivity = this.activityRegistery.get(id);
+  //   //this.selectedActivity = this.activities.find((act) => act.id === id);
+  // };
+  // cancelSelectedActivity = () => {
+  //   this.selectedActivity = undefined;
+  // };
+  // openForm = (id?: string) => {
+  //   id ? this.selectActivity(id) : this.cancelSelectedActivity();
+  //   this.editMode = true;
+  // };
+  // closeForm = () => {
+  //   this.editMode = true;
+  // };
+
   createActivity = async (activity: Activity) => {
     activity.id = uuid();
     try {
@@ -68,6 +96,7 @@ export default class ActicityStore {
       console.error(error);
     }
   };
+
   updateActivity = async (activity: Activity) => {
     try {
       await agent.Activities.update(activity);
@@ -94,7 +123,7 @@ export default class ActicityStore {
       runInAction(() => {
         this.activityRegistery.delete(id);
         // this.activities = [...this.activities.filter((a) => a.id !== id)];
-        if (this.selectedActivity?.id === id) this.cancelSelectedActivity();
+        // if (this.selectedActivity?.id === id) this.cancelSelectedActivity();
       });
     } catch (error) {
       console.error(error);

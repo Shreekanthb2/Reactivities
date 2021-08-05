@@ -2,17 +2,14 @@ import { observer } from "mobx-react-lite";
 import { Badge, Button, Card } from "react-bootstrap";
 import { XLg } from "react-bootstrap-icons";
 import Moment from "react-moment";
+import { Link } from "react-router-dom";
 import { Segment } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
 import { useStore } from "../../../app/stores/store";
 
 export default observer(function ActivityList() {
   const { activityStore } = useStore();
-  const {
-    activitiesByDate: activities,
-    selectActivity,
-    deleteActivity,
-  } = activityStore;
+  const { activitiesByDate: activities, deleteActivity } = activityStore;
   return (
     <Segment>
       {activities.map((activity: Activity) => (
@@ -39,7 +36,8 @@ export default observer(function ActivityList() {
             <Button
               variant="primary"
               className="float-right"
-              onClick={() => selectActivity(activity.id)}
+              as={Link}
+              to={`/activities/${activity.id}`}
             >
               View
             </Button>

@@ -1,11 +1,11 @@
 import axios, { AxiosResponse } from "axios";
 import { Activity } from "../models/activity";
 
-const sleep = (delay: number) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-};
+// const sleep = (delay: number) => {
+//   return new Promise((resolve) => {
+//     setTimeout(resolve, delay);
+//   });
+// };
 
 axios.defaults.baseURL = "http://localhost:8080/api";
 

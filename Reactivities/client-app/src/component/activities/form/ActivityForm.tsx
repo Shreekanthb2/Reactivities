@@ -1,13 +1,18 @@
+import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
 import { ChangeEvent, useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { Activity } from "../../../app/models/activity";
 import { useStore } from "../../../app/stores/store";
 
-export function ActivityForm() {
+export default observer(function ActivityForm() {
   const { activityStore } = useStore();
-  const { selectedActivity, closeForm, createActivity, updateActivity } =
+  const { loadActivity, createActivity, updateActivity, loading } =
     activityStore;
-  const initialState = selectedActivity ?? {
+  const { id } = useParams<{ id: string }>();
+  const [activity, setActivitity] = useState<Activity>({
     id: "",
     title: "",
     category: "",
@@ -15,8 +20,12 @@ export function ActivityForm() {
     description: "",
     venue: "",
     city: "",
-  };
-  const [activity, setActivitity] = useState<Activity>(initialState);
+  });
+
+  useEffect(() => {
+    if (id) loadActivity(id).then((activity) => setActivitity(activity!));
+  }, [id, loadActivity]);
+
   function handleSubmit(e: any) {
     e.preventDefault();
     activity.id ? updateActivity(activity) : createActivity(activity);
@@ -27,6 +36,13 @@ export function ActivityForm() {
     const { name, value } = event.target;
     setActivitity({ ...activity, [name]: value });
   }
+  if (loading)
+    return (
+      <LoadingComponent
+        content="Loading the Activity..."
+        loading={loading}
+      ></LoadingComponent>
+    );
   return (
     <Form autoComplete="off" onSubmit={handleSubmit}>
       <Form.Group className="activity-form-group" controlId="formTitile">
@@ -95,14 +111,9 @@ export function ActivityForm() {
       <Button variant="primary" type="submit" onClick={(e) => handleSubmit}>
         Submit
       </Button>
-      <Button
-        variant="secondary"
-        type="cancel"
-        className="float-right"
-        onClick={() => closeForm()}
-      >
+      <Button variant="secondary" type="cancel" className="float-right">
         Cancel
       </Button>
     </Form>
   );
-}
+});
