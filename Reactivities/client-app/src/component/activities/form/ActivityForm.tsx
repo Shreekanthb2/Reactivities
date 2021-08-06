@@ -2,12 +2,15 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { ChangeEvent, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { Activity } from "../../../app/models/activity";
 import { useStore } from "../../../app/stores/store";
+import { v4 as uuid } from "uuid";
+import "../Activities.css";
 
 export default observer(function ActivityForm() {
+  const history = useHistory();
   const { activityStore } = useStore();
   const { loadActivity, createActivity, updateActivity, loading } =
     activityStore;
@@ -28,7 +31,21 @@ export default observer(function ActivityForm() {
 
   function handleSubmit(e: any) {
     e.preventDefault();
-    activity.id ? updateActivity(activity) : createActivity(activity);
+
+    if (activity.id.length === 0) {
+      activity.id = uuid();
+      var newActivity = {
+        ...activity,
+        id: uuid(),
+      };
+      createActivity(newActivity).then(() =>
+        history.push(`/activities/${newActivity.id}`)
+      );
+    } else {
+      updateActivity(activity).then(() =>
+        history.push(`/activities/${activity.id}`)
+      );
+    }
   }
   function handleInputChange(
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -44,7 +61,11 @@ export default observer(function ActivityForm() {
       ></LoadingComponent>
     );
   return (
-    <Form autoComplete="off" onSubmit={handleSubmit}>
+    <Form
+      autoComplete="off"
+      onSubmit={handleSubmit}
+      className="activity-page-top"
+    >
       <Form.Group className="activity-form-group" controlId="formTitile">
         <Form.Label className="activity-form-label">Title</Form.Label>
         <Form.Control
@@ -111,7 +132,13 @@ export default observer(function ActivityForm() {
       <Button variant="primary" type="submit" onClick={(e) => handleSubmit}>
         Submit
       </Button>
-      <Button variant="secondary" type="cancel" className="float-right">
+      <Button
+        as={Link}
+        to="/activities"
+        variant="secondary"
+        type="cancel"
+        className="float-right"
+      >
         Cancel
       </Button>
     </Form>

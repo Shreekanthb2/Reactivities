@@ -40,7 +40,14 @@
 .activity-form-group {
   margin-bottom: 5px !important;
 }
+.activity-details-image {
+  width: 100% !important;
+  margin-left: 0px;
+}
 
+.activity-page-top {
+  margin-top: 80px;
+}
 /* width */
 ::-webkit-scrollbar {
   width: 10px;

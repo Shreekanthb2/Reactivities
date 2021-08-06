@@ -3,16 +3,17 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "../../../app/stores/store";
 import ActivityList from "./ActivityList";
 import "../Activities.css";
+
 import { useEffect } from "react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 
 export default observer(function ActivityDashboard() {
   // (props:Props) == props.activities
   const { activityStore } = useStore();
-  const { loadActivities, loading } = activityStore;
+  const { loadActivities, loading, activityRegistery } = activityStore;
 
   useEffect(() => {
-    loadActivities();
+    if (activityRegistery.size === 0) loadActivities();
   }, [activityStore, loadActivities]);
 
   if (loading)
